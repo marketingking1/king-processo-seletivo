@@ -1,0 +1,8 @@
+# pastas de teste / artefatos locais
+shots/
+.playwright-mcp/
+*.log
+
+# SO
+Thumbs.db
+.DS_Store

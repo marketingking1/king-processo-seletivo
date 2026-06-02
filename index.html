@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Processo Seletivo — King of Languages</title>
+<link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#cc213a; --red-2:#e2344c; --red-dark:#a81b30;
+  --navy:#061f35; --blue:#0057a5; --blue-light:#6ec1e4; --gold:#edc006;
+  --ink:#0f2236; --body:#51627a; --muted:#8a99ac;
+  --line:#e6ebf2; --field:#f5f7fb; --field-line:#dfe5ee;
+  --r-lg:30px; --r-md:16px; --r-pill:9999px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:"Poppins",sans-serif;
+  color:var(--ink);
+  min-height:100dvh;
+  display:flex;align-items:center;justify-content:center;
+  padding:28px;overflow:hidden;position:relative;
+  background:
+    radial-gradient(90% 80% at 8% 6%, rgba(204,33,58,.10) 0%, rgba(204,33,58,0) 46%),
+    radial-gradient(90% 80% at 96% 96%, rgba(0,87,165,.12) 0%, rgba(0,87,165,0) 48%),
+    linear-gradient(165deg,#f5f8fc 0%, #eaf0f7 100%);
+}
+
+/* ───── FUNDO: blobs claros sutis ───── */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.45;animation:float 18s ease-in-out infinite}
+.blob.b1{width:480px;height:480px;background:rgba(226,52,76,.30);top:-150px;left:-110px}
+.blob.b2{width:440px;height:440px;background:rgba(0,87,165,.22);bottom:-170px;right:-90px;animation-delay:-6s}
+.blob.b3{width:300px;height:300px;background:rgba(110,193,228,.20);top:42%;left:60%;animation-delay:-10s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(36px,-26px) scale(1.07)}66%{transform:translate(-26px,22px) scale(.95)}}
+
+/* ───── CARTÃO PRINCIPAL ───── */
+.app{position:relative;z-index:2;width:min(1080px,100%);height:min(700px,92dvh);
+  display:grid;grid-template-columns:0.82fr 1.18fr;
+  background:#fff;border-radius:var(--r-lg);
+  box-shadow:0 40px 110px -34px rgba(6,31,53,.30), 0 8px 24px -12px rgba(6,31,53,.12);
+  overflow:hidden;
+  animation:rise .7s cubic-bezier(.2,.7,.2,1) both;
+}
+@keyframes rise{from{opacity:0;transform:translateY(22px) scale(.99)}to{opacity:1;transform:none}}
+
+/* ───── PAINEL DE MARCA (esquerda, gradiente vermelho King) ───── */
+.brand{position:relative;padding:46px 40px;display:flex;flex-direction:column;overflow:hidden;
+  color:#fff;
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(255,255,255,.20) 0%, rgba(255,255,255,0) 45%),
+    linear-gradient(160deg,#e2344c 0%, #cc213a 46%, #a81b30 100%);
+}
+.brand::after{content:"";position:absolute;right:-90px;bottom:-90px;width:360px;height:360px;
+  background:url("assets/simbolo-branco.png") center/contain no-repeat;opacity:.07;transform:rotate(-8deg);pointer-events:none}
+.brand .logo{height:46px;width:auto;align-self:flex-start;filter:drop-shadow(0 3px 12px rgba(0,0,0,.18))}
+.brand h1{margin-top:32px;font-size:33px;font-weight:800;line-height:1.14;letter-spacing:-.02em}
+.brand h1 .hl{color:#ffd7dd}
+.brand .lead{margin-top:14px;font-size:15.5px;font-weight:400;color:rgba(255,255,255,.85);line-height:1.5;max-width:330px}
+
+/* stepper vertical */
+.steps{margin-top:32px;display:flex;flex-direction:column;gap:4px;position:relative;z-index:1}
+.stp{display:flex;align-items:center;gap:14px;padding:11px 0;position:relative}
+.stp .dot{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  font-weight:700;font-size:15px;color:#fff;background:rgba(255,255,255,.16);
+  border:1.5px solid rgba(255,255,255,.4);transition:.45s}
+.stp .dot svg{width:18px;height:18px}
+.stp .lbl{font-size:15px;font-weight:600;color:rgba(255,255,255,.78);transition:.45s}
+.stp .lbl small{display:block;font-size:12px;font-weight:400;color:rgba(255,255,255,.55)}
+.stp:not(:last-child)::after{content:"";position:absolute;left:18.5px;top:46px;width:1.5px;height:18px;background:rgba(255,255,255,.28)}
+.stp.active .dot{background:#fff;color:var(--red);border-color:#fff;box-shadow:0 8px 20px -6px rgba(0,0,0,.35);transform:scale(1.05)}
+.stp.active .lbl{color:#fff}
+.stp.done .dot{background:rgba(255,255,255,.92);color:var(--red);border-color:#fff}
+.stp.done .lbl{color:#fff}
+
+.brand .spacer{flex:1}
+.proof{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;position:relative;z-index:1;
+  padding:9px 16px;border-radius:var(--r-pill);background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.3);font-size:13px;font-weight:600;backdrop-filter:blur(4px)}
+.proof .stars{color:var(--gold);letter-spacing:1px}
+
+/* ───── PAINEL DO FORM (direita, branco) ───── */
+.form{position:relative;padding:42px 54px;display:flex;flex-direction:column;background:#fff}
+
+.fhead{display:flex;align-items:center;gap:18px;height:34px}
+.back{display:none;align-items:center;gap:7px;background:none;border:none;cursor:pointer;
+  color:var(--muted);font-family:inherit;font-size:14px;font-weight:600;padding:6px 4px;border-radius:8px;transition:.2s}
+.back:hover{color:var(--ink)}
+.back.show{display:inline-flex}
+.progress{flex:1;height:7px;border-radius:9999px;background:#eef2f7;overflow:hidden}
+.progress i{display:block;height:100%;width:0%;border-radius:9999px;
+  background:linear-gradient(90deg,var(--red-2),var(--red));transition:width .5s cubic-bezier(.4,0,.2,1)}
+.counter{font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap}
+
+.screens{flex:1;position:relative;display:flex;align-items:center}
+.screen{position:absolute;inset:0;width:100%;display:flex;flex-direction:column;justify-content:center;
+  gap:18px;opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .4s, transform .4s}
+.screen.active{opacity:1;visibility:visible;transform:none;position:relative}
+
+.qnum{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;color:var(--red);letter-spacing:.04em}
+.qnum svg{width:17px;height:17px}
+.qtitle{font-size:30px;font-weight:700;line-height:1.18;letter-spacing:-.02em;color:var(--ink)}
+.qhint{font-size:14.5px;color:var(--body);font-weight:400;margin-top:-6px;line-height:1.5}
+
+/* inputs */
+.field{position:relative;margin-top:6px}
+.field input{width:100%;font-family:inherit;font-size:21px;font-weight:500;color:var(--ink);
+  background:var(--field);border:1.5px solid var(--field-line);border-radius:var(--r-md);
+  padding:21px 20px;outline:none;transition:.22s}
+.field input::placeholder{color:#a7b3c2;font-weight:400}
+.field input:focus{border-color:var(--red);background:#fff;
+  box-shadow:0 0 0 4px rgba(204,33,58,.13), 0 8px 24px -14px rgba(204,33,58,.5)}
+.phone{display:flex;gap:12px}
+.phone .ddd{width:120px;flex:none;text-align:center}
+.phone .num{flex:1}
+.err{font-size:13.5px;font-weight:500;color:var(--red);min-height:18px;
+  display:flex;align-items:center;gap:7px;opacity:0;transform:translateY(-4px);transition:.25s}
+.err.show{opacity:1;transform:none}
+.err svg{width:15px;height:15px;flex:none}
+
+/* botão */
+.btn{align-self:flex-start;display:inline-flex;align-items:center;gap:12px;cursor:pointer;
+  font-family:inherit;font-size:17px;font-weight:700;color:#fff;border:none;
+  padding:18px 34px;border-radius:var(--r-pill);
+  background:linear-gradient(135deg,var(--red-2) 0%,var(--red-dark) 100%);
+  box-shadow:0 14px 32px -12px rgba(204,33,58,.65), inset 0 1px 0 rgba(255,255,255,.25);
+  transition:transform .18s, box-shadow .25s;margin-top:4px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 20px 44px -12px rgba(204,33,58,.75)}
+.btn:active{transform:translateY(0)}
+.btn .arrow{display:inline-flex;transition:transform .25s}
+.btn:hover .arrow{transform:translateX(4px)}
+.btn svg{width:20px;height:20px}
+.btn.wpp{background:linear-gradient(135deg,#25d366,#128c4b);box-shadow:0 14px 32px -12px rgba(18,140,75,.6)}
+.enterhint{font-size:12.5px;color:var(--muted);margin-top:12px;display:flex;align-items:center;gap:7px}
+.enterhint kbd{font-family:inherit;font-size:11px;background:#f1f4f8;border:1px solid var(--line);
+  border-radius:6px;padding:2px 8px;font-weight:600;color:var(--body)}
+
+/* intro */
+.intro-list{display:flex;flex-direction:column;gap:13px;margin-top:2px}
+.intro-list .it{display:flex;align-items:center;gap:14px;font-size:15.5px;font-weight:600;color:var(--ink)}
+.intro-list .it>div{min-width:0;overflow-wrap:anywhere}
+.intro-list .it .ic{flex:none;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;
+  background:var(--field);border:1px solid var(--line)}
+.intro-list .it .ic svg{width:21px;height:21px;stroke:var(--red);fill:none}
+.intro-list .it small{display:block;font-size:12.5px;font-weight:400;color:var(--muted)}
+.badge-fast{align-self:flex-start;display:inline-flex;align-items:center;gap:9px;
+  padding:7px 15px;border-radius:var(--r-pill);font-size:12.5px;font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--red);background:rgba(204,33,58,.08);border:1px solid rgba(204,33,58,.22)}
+.badge-fast .pulse{width:8px;height:8px;border-radius:50%;background:#2ecc71;box-shadow:0 0 0 0 rgba(46,204,113,.55);animation:pulse 1.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(46,204,113,.55)}70%{box-shadow:0 0 0 9px rgba(46,204,113,0)}100%{box-shadow:0 0 0 0 rgba(46,204,113,0)}}
+
+/* ───── SUCESSO (centralizado) ───── */
+.screen.success{align-items:center;justify-content:center;text-align:center;gap:16px}
+.screen.success .btn{align-self:center}
+.checkmark{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,#2ecc71,#1aa356);box-shadow:0 16px 42px -12px rgba(26,163,86,.6);
+  animation:pop .6s cubic-bezier(.2,1.4,.4,1) both}
+.checkmark svg{width:46px;height:46px}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.success h2{font-size:29px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.success p{font-size:15px;color:var(--body);max-width:400px;line-height:1.55}
+.warnbox{display:flex;gap:13px;text-align:left;max-width:430px;margin-top:28px;
+  background:#fff5f6;border:1px solid rgba(204,33,58,.22);border-left:4px solid var(--red);
+  border-radius:14px;padding:16px 18px}
+.warnbox svg{width:24px;height:24px;flex:none;margin-top:1px}
+.warnbox p{font-size:13.5px;line-height:1.5;color:#6b2230;max-width:none;margin:0;text-align:left}
+.warnbox p b{color:var(--red);font-weight:700}
+
+/* ───── RESPONSIVO ───── */
+@media (max-width:860px){
+  body{padding:0;overflow:auto}
+  .app{grid-template-columns:1fr;height:auto;min-height:100dvh;border-radius:0}
+  .brand{padding:30px 26px 28px}
+  .brand::after{width:230px;height:230px;right:-60px;bottom:-60px}
+  .brand h1{font-size:26px;margin-top:22px}
+  .brand .lead{font-size:14px}
+  .steps{display:none}
+  .brand .spacer{display:none}.proof{margin-top:20px}
+  .form{padding:30px 26px 44px}
+  .qtitle{font-size:24px}
+  .field input{font-size:18px;padding:18px 16px}
+  .screens{min-height:330px}
+}
+@media (max-width:380px){.phone{flex-direction:column}.phone .ddd{width:100%}}
+</style>
+</head>
+<body>
+<div class="bg"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+
+<main class="app">
+  <!-- PAINEL DE MARCA -->
+  <aside class="brand">
+    <img class="logo" src="assets/logo-branco.png" alt="King of Languages">
+    <h1>Faça parte do <span class="hl">time King</span> de professores</h1>
+    <p class="lead">Processo seletivo 100% online, rápido e direto ao ponto. Vamos começar?</p>
+
+    <div class="steps" id="steps">
+      <div class="stp" data-s="1"><span class="dot">1</span><span class="lbl">Formulário<small>menos de 1 minuto</small></span></div>
+      <div class="stp" data-s="2"><span class="dot">2</span><span class="lbl">Confirmação no WhatsApp<small>candidatura</small></span></div>
+      <div class="stp" data-s="3"><span class="dot">3</span><span class="lbl">Entrevista<small>com nosso time</small></span></div>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="proof"><span class="stars">★★★★★</span> 4,9 · +9 mil alunos ativos</div>
+  </aside>
+
+  <!-- PAINEL DO FORMULÁRIO -->
+  <section class="form">
+    <div class="fhead">
+      <button class="back" id="back" aria-label="Voltar">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Voltar
+      </button>
+      <div class="progress"><i id="bar"></i></div>
+      <span class="counter" id="counter">Etapa 1 de 3</span>
+    </div>
+
+    <div class="screens" id="screens">
+
+      <!-- INTRO -->
+      <div class="screen active" data-screen="intro">
+        <span class="badge-fast"><span class="pulse"></span>Leva menos de 1 minuto</span>
+        <div class="qtitle">Processo Seletivo<br>King of Languages</div>
+        <p class="qhint">Que bom que você quer fazer parte do nosso time!<br>O processo é rápido e tem apenas 3 etapas:</p>
+        <div class="intro-list">
+          <div class="it"><span class="ic"><svg viewBox="0 0 24 24"><path d="M8 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2M8 3a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2M8 3a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2M9 12h6M9 16h4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div>Preencher este formulário</div></div>
+          <div class="it"><span class="ic"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div>Confirmar sua candidatura pelo WhatsApp</div></div>
+          <div class="it"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3ZM19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div>Entrevista com nosso time</div></div>
+        </div>
+        <button class="btn" data-next>Começar <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </div>
+
+      <!-- Q1 NOME -->
+      <div class="screen" data-screen="nome">
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 01</span>
+        <label class="qtitle" for="i-nome">Qual é o seu nome completo?</label>
+        <div class="field"><input id="i-nome" type="text" autocomplete="name" placeholder="Digite seu nome aqui..."></div>
+        <div class="err" id="e-nome"></div>
+        <button class="btn" data-next>Avançar <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <div class="enterhint">pressione <kbd>Enter ↵</kbd> para continuar</div>
+      </div>
+
+      <!-- Q2 EMAIL -->
+      <div class="screen" data-screen="email">
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 02</span>
+        <label class="qtitle" for="i-email">Qual o seu melhor e-mail?</label>
+        <p class="qhint">Ele será usado durante todo o processo seletivo.</p>
+        <div class="field"><input id="i-email" type="email" autocomplete="email" inputmode="email" placeholder="exemplo@email.com"></div>
+        <div class="err" id="e-email"></div>
+        <button class="btn" data-next>Avançar <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <div class="enterhint">pressione <kbd>Enter ↵</kbd> para continuar</div>
+      </div>
+
+      <!-- Q3 WHATSAPP -->
+      <div class="screen" data-screen="whats">
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 03</span>
+        <label class="qtitle" for="i-num">Seu número de WhatsApp</label>
+        <p class="qhint">Com DDD — é por ele que vamos confirmar sua candidatura.</p>
+        <div class="field phone">
+          <input id="i-ddd" class="ddd" type="tel" inputmode="numeric" maxlength="2" placeholder="(11)">
+          <input id="i-num" class="num" type="tel" inputmode="numeric" maxlength="10" placeholder="00000-0000">
+        </div>
+        <div class="err" id="e-whats"></div>
+        <button class="btn" data-submit>Enviar candidatura
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <div class="enterhint">pressione <kbd>Enter ↵</kbd> para enviar</div>
+      </div>
+
+      <!-- SUCESSO -->
+      <div class="screen success" data-screen="ok">
+        <div class="checkmark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h2>Candidatura enviada!</h2>
+        <p>Recebemos seus dados, <b id="ok-nome">candidato(a)</b>. Falta só um passo para garantir sua vaga no processo.</p>
+        <button class="btn wpp" id="go-wpp">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.512 5.26l-.999 3.648 3.476-.911z"/></svg>
+          Finalizar no WhatsApp
+        </button>
+        <div class="warnbox">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke="#cc213a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p>Seu cadastro <b>só será validado</b> quando você finalizar a candidatura pelo WhatsApp. Candidatos que não completarem esta etapa em até <b>24h</b> serão removidos do processo.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  const order = ["intro","nome","email","whats","ok"];
+  const stepOf = {intro:1, nome:1, email:1, whats:1, ok:2};
+  let idx = 0;
+
+  const screens = [...document.querySelectorAll(".screen")];
+  const bar = document.getElementById("bar");
+  const counter = document.getElementById("counter");
+  const backBtn = document.getElementById("back");
+  const fhead = document.querySelector(".fhead");
+  const stepsEls = [...document.querySelectorAll("#steps .stp")];
+  const CHECK = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  const data = {nome:"", email:"", ddd:"", num:""};
+
+  function show(i){
+    idx = i;
+    const name = order[i];
+    screens.forEach(s=>s.classList.toggle("active", s.dataset.screen===name));
+
+    const pct = {intro:8, nome:34, email:60, whats:86, ok:100}[name];
+    bar.style.width = pct + "%";
+
+    const qIndex = {nome:1, email:2, whats:3}[name];
+    counter.textContent = qIndex ? ("Pergunta " + qIndex + " de 3") : (name==="ok" ? "Concluído" : "");
+
+    const cur = stepOf[name];
+    stepsEls.forEach(el=>{
+      const s = +el.dataset.s;
+      const dot = el.querySelector(".dot");
+      el.classList.toggle("active", s===cur);
+      el.classList.toggle("done", s<cur);
+      dot.innerHTML = (s<cur) ? CHECK : s;
+    });
+
+    backBtn.classList.toggle("show", i>0 && name!=="ok");
+    fhead.style.display = (name==="ok") ? "none" : "flex";
+
+    const inp = screens[i].querySelector("input");
+    if(inp) setTimeout(()=>inp.focus(), 420);
+  }
+
+  function showErr(id, msg){
+    const e = document.getElementById(id);
+    e.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke="#cc213a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' + msg;
+    e.classList.add("show");
+  }
+  function clearErr(id){ const e=document.getElementById(id); e.classList.remove("show"); e.textContent=""; }
+
+  function validate(name){
+    if(name==="nome"){
+      const v = document.getElementById("i-nome").value.trim();
+      if(v.length<3 || !v.includes(" ")){ showErr("e-nome","Digite seu nome e sobrenome."); return false; }
+      data.nome = v; clearErr("e-nome"); return true;
+    }
+    if(name==="email"){
+      const v = document.getElementById("i-email").value.trim();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){ showErr("e-email","Hmm, esse e-mail não parece válido."); return false; }
+      data.email = v; clearErr("e-email"); return true;
+    }
+    if(name==="whats"){
+      const ddd = document.getElementById("i-ddd").value.replace(/\D/g,"");
+      const num = document.getElementById("i-num").value.replace(/\D/g,"");
+      if(ddd.length!==2){ showErr("e-whats","Informe o DDD (2 dígitos)."); return false; }
+      if(num.length<8){ showErr("e-whats","Informe um número de WhatsApp válido."); return false; }
+      data.ddd=ddd; data.num=num; clearErr("e-whats"); return true;
+    }
+    return true;
+  }
+
+  function next(){
+    const name = order[idx];
+    if(["nome","email","whats"].includes(name) && !validate(name)) return;
+    if(idx < order.length-1) show(idx+1);
+  }
+  function back(){ if(idx>0) show(idx-1); }
+
+  function submit(){
+    if(!validate("whats")) return;
+    document.getElementById("ok-nome").textContent = (data.nome.split(" ")[0]) || "candidato(a)";
+    const msg = encodeURIComponent("Olá! Acabei de me candidatar à vaga de professor na King of Languages. Meu nome é " + data.nome + ".");
+    document.getElementById("go-wpp").onclick = ()=> window.open("https://wa.me/5519995979055?text="+msg, "_blank");
+    show(order.indexOf("ok"));
+    console.log("CANDIDATURA:", data); // TODO: enviar pra respondi/Kommo/webhook
+  }
+
+  document.querySelectorAll("[data-next]").forEach(b=>b.addEventListener("click", next));
+  document.querySelectorAll("[data-submit]").forEach(b=>b.addEventListener("click", submit));
+  backBtn.addEventListener("click", back);
+
+  document.addEventListener("keydown", e=>{
+    if(e.key!=="Enter") return;
+    const name = order[idx];
+    if(name==="whats"){ e.preventDefault(); submit(); }
+    else if(name!=="ok"){ e.preventDefault(); next(); }
+  });
+
+  const num = document.getElementById("i-num");
+  num.addEventListener("input", ()=>{
+    let v = num.value.replace(/\D/g,"").slice(0,9);
+    if(v.length>5) v = v.slice(0,5)+"-"+v.slice(5);
+    num.value = v;
+  });
+  const ddd = document.getElementById("i-ddd");
+  ddd.addEventListener("input", ()=>{ ddd.value = ddd.value.replace(/\D/g,"").slice(0,2);
+    if(ddd.value.length===2) num.focus(); });
+
+  show(0);
+})();
+</script>
+</body>
+</html>
