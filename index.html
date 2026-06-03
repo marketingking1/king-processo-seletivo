@@ -332,6 +332,23 @@ body{
   const stepOf = {intro:1, nome:1, email:1, whats:1, ok:2};
   let idx = 0;
 
+  /* ── Meta: captura de fbclid/fbc/fbp p/ match offline (CAPI) ── */
+  const qp = new URLSearchParams(location.search);
+  const getCookie = n => { const m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)'); return m?m.pop():''; };
+  const fbclid = qp.get('fbclid') || '';
+  if(fbclid){ try{ localStorage.setItem('kps_fbclid', fbclid); localStorage.setItem('kps_fbclid_ts', Date.now()); }catch(e){} }
+  function fbRef(){
+    let fbc = getCookie('_fbc');
+    if(!fbc){
+      let cid = fbclid, ts = Date.now();
+      try{ cid = cid || localStorage.getItem('kps_fbclid') || ''; ts = +localStorage.getItem('kps_fbclid_ts') || ts; }catch(e){}
+      if(cid) fbc = 'fb.1.'+ts+'.'+cid;
+    }
+    if(!fbc) return '';            // só rastreia quando veio de anúncio (tem fbclid/fbc)
+    const fbp = getCookie('_fbp');
+    return 'fbc=' + fbc + (fbp ? ' fbp=' + fbp : '');
+  }
+
   const screens = [...document.querySelectorAll(".screen")];
   const bar = document.getElementById("bar");
   const counter = document.getElementById("counter");
@@ -407,7 +424,11 @@ body{
   function submit(){
     if(!validate("whats")) return;
     document.getElementById("ok-nome").textContent = (data.nome.split(" ")[0]) || "candidato(a)";
-    const msg = encodeURIComponent("Olá! Acabei de me candidatar à vaga de professor na King of Languages. Meu nome é " + data.nome + ".");
+    const ref = fbRef();
+    const msg = encodeURIComponent(
+      "Olá! Acabei de me candidatar à vaga de professor na King of Languages. Meu nome é " + data.nome + "."
+      + (ref ? "\n\n(rastreio: " + ref + ")" : "")
+    );
     document.getElementById("go-wpp").onclick = ()=>{
       if(window.fbq) fbq('track','Contact',{content_name:'Confirmação WhatsApp'});
       window.open("https://wa.me/5519995979055?text="+msg, "_blank");
