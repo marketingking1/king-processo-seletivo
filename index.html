@@ -349,6 +349,21 @@ body{
     return 'fbc=' + fbc + (fbp ? ' fbp=' + fbp : '');
   }
 
+  /* ── Meta: captura dinâmica dos UTMs (parâmetros de URL do anúncio) ── */
+  const UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_id','utm_term','utm_content','placement'];
+  const utm = {};
+  UTM_KEYS.forEach(k=>{
+    let v = qp.get(k) || '';
+    if(v){ try{ localStorage.setItem('kps_'+k, v); }catch(e){} }
+    else { try{ v = localStorage.getItem('kps_'+k) || ''; }catch(e){} }
+    if(v) utm[k] = v;
+  });
+  // linha legível p/ vendedor/CRM: fonte · campanha · anúncio
+  function origemTxt(){
+    const o = [utm.utm_source, utm.utm_campaign, utm.utm_content].filter(Boolean);
+    return o.join(' · ');
+  }
+
   const screens = [...document.querySelectorAll(".screen")];
   const bar = document.getElementById("bar");
   const counter = document.getElementById("counter");
@@ -425,17 +440,22 @@ body{
     if(!validate("whats")) return;
     document.getElementById("ok-nome").textContent = (data.nome.split(" ")[0]) || "candidato(a)";
     const ref = fbRef();
+    const origem = origemTxt();
+    const extras = [
+      origem ? "(origem: " + origem + ")" : "",
+      ref ? "(rastreio: " + ref + ")" : ""
+    ].filter(Boolean).join("\n");
     const msg = encodeURIComponent(
       "Olá! Acabei de me candidatar à vaga de professor na King of Languages. Meu nome é " + data.nome + "."
-      + (ref ? "\n\n(rastreio: " + ref + ")" : "")
+      + (extras ? "\n\n" + extras : "")
     );
     document.getElementById("go-wpp").onclick = ()=>{
-      if(window.fbq) fbq('track','Contact',{content_name:'Confirmação WhatsApp'});
+      if(window.fbq) fbq('track','Contact', Object.assign({content_name:'Confirmação WhatsApp'}, utm));
       window.open("https://wa.me/5519995979055?text="+msg, "_blank");
     };
     show(order.indexOf("ok"));
     // Meta Pixel: conversão de candidatura enviada
-    if(window.fbq) fbq('track','Lead',{content_name:'Processo Seletivo Professores',content_category:'recrutamento'});
+    if(window.fbq) fbq('track','Lead', Object.assign({content_name:'Processo Seletivo Professores',content_category:'recrutamento'}, utm));
     console.log("CANDIDATURA:", data); // TODO: enviar pra respondi/Kommo/webhook
   }
 
