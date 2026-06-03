@@ -22,8 +22,8 @@ body{
   font-family:"Poppins",sans-serif;
   color:var(--ink);
   min-height:100dvh;
-  display:flex;align-items:center;justify-content:center;
-  padding:clamp(12px,2.4vmin,28px);overflow-x:hidden;position:relative;
+  display:flex;align-items:stretch;justify-content:center;
+  padding:0;overflow-x:hidden;position:relative;
   background:
     radial-gradient(90% 80% at 8% 6%, rgba(204,33,58,.10) 0%, rgba(204,33,58,0) 46%),
     radial-gradient(90% 80% at 96% 96%, rgba(0,87,165,.12) 0%, rgba(0,87,165,0) 48%),
@@ -38,16 +38,19 @@ body{
 .blob.b3{width:300px;height:300px;background:rgba(110,193,228,.20);top:42%;left:60%;animation-delay:-10s}
 @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(36px,-26px) scale(1.07)}66%{transform:translate(-26px,22px) scale(.95)}}
 
-/* ───── CARTÃO PRINCIPAL ───── */
-.app{position:relative;z-index:2;width:min(1280px,100%);
-  min-height:min(680px, calc(100dvh - 56px));
+/* ───── CARTÃO PRINCIPAL (full-bleed: ocupa a tela toda) ───── */
+.app{position:relative;z-index:2;width:100%;
+  min-height:100dvh;
   display:grid;grid-template-columns:0.82fr 1.18fr;
-  background:#fff;border-radius:var(--r-lg);
-  box-shadow:0 40px 110px -34px rgba(6,31,53,.30), 0 8px 24px -12px rgba(6,31,53,.12);
+  background:#fff;border-radius:0;
   overflow:hidden;
-  animation:rise .7s cubic-bezier(.2,.7,.2,1) both;
+  animation:rise .5s ease both;
 }
-@keyframes rise{from{opacity:0;transform:translateY(22px) scale(.99)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0}to{opacity:1}}
+
+/* conteúdo agrupado no centro de cada painel — evita sobra em telas largas */
+.brand-inner{flex:1;display:flex;flex-direction:column;width:100%;max-width:520px;align-self:center}
+.form-inner{flex:1;display:flex;flex-direction:column;width:100%;max-width:600px;align-self:center}
 
 /* ───── PAINEL DE MARCA (esquerda, gradiente vermelho King) ───── */
 .brand{position:relative;padding:clamp(30px,3.4vw,46px) clamp(26px,2.9vw,40px);display:flex;flex-direction:column;overflow:hidden;
@@ -183,6 +186,7 @@ body{
   body{display:block;padding:0;overflow-x:hidden}
   .app{width:100%;min-height:100dvh;grid-template-columns:1fr;grid-template-rows:auto 1fr;
     border-radius:0;box-shadow:none;animation:none}
+  .brand-inner,.form-inner{max-width:none;align-self:stretch}
   .brand{padding:max(26px,env(safe-area-inset-top)) clamp(20px,5.2vw,28px) 24px}
   .brand::after{width:220px;height:220px;right:-56px;bottom:-56px}
   .brand h1{font-size:clamp(23px,6.4vw,28px);margin-top:18px}
@@ -213,6 +217,7 @@ body{
 <main class="app">
   <!-- PAINEL DE MARCA -->
   <aside class="brand">
+    <div class="brand-inner">
     <img class="logo" src="assets/logo-branco.png" alt="King of Languages">
     <h1>Faça parte do <span class="hl">time King</span> de professores</h1>
     <p class="lead">Processo seletivo 100% online, rápido e direto ao ponto. Vamos começar?</p>
@@ -225,10 +230,12 @@ body{
 
     <div class="spacer"></div>
     <div class="proof"><span class="stars">★★★★★</span> 4,9 · +9 mil alunos ativos</div>
+    </div>
   </aside>
 
   <!-- PAINEL DO FORMULÁRIO -->
   <section class="form">
+    <div class="form-inner">
     <div class="fhead">
       <button class="back" id="back" aria-label="Voltar">
         <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -305,6 +312,7 @@ body{
         </div>
       </div>
 
+    </div>
     </div>
   </section>
 </main>
