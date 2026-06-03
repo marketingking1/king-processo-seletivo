@@ -17,13 +17,13 @@
   --r-lg:30px; --r-md:16px; --r-pill:9999px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%}
+html{height:100%}
 body{
   font-family:"Poppins",sans-serif;
   color:var(--ink);
   min-height:100dvh;
   display:flex;align-items:center;justify-content:center;
-  padding:28px;overflow:hidden;position:relative;
+  padding:clamp(12px,2.4vmin,28px);overflow-x:hidden;position:relative;
   background:
     radial-gradient(90% 80% at 8% 6%, rgba(204,33,58,.10) 0%, rgba(204,33,58,0) 46%),
     radial-gradient(90% 80% at 96% 96%, rgba(0,87,165,.12) 0%, rgba(0,87,165,0) 48%),
@@ -39,7 +39,8 @@ body{
 @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(36px,-26px) scale(1.07)}66%{transform:translate(-26px,22px) scale(.95)}}
 
 /* ───── CARTÃO PRINCIPAL ───── */
-.app{position:relative;z-index:2;width:min(1080px,100%);height:min(700px,92dvh);
+.app{position:relative;z-index:2;width:min(1280px,100%);
+  min-height:min(680px, calc(100dvh - 56px));
   display:grid;grid-template-columns:0.82fr 1.18fr;
   background:#fff;border-radius:var(--r-lg);
   box-shadow:0 40px 110px -34px rgba(6,31,53,.30), 0 8px 24px -12px rgba(6,31,53,.12);
@@ -49,7 +50,7 @@ body{
 @keyframes rise{from{opacity:0;transform:translateY(22px) scale(.99)}to{opacity:1;transform:none}}
 
 /* ───── PAINEL DE MARCA (esquerda, gradiente vermelho King) ───── */
-.brand{position:relative;padding:46px 40px;display:flex;flex-direction:column;overflow:hidden;
+.brand{position:relative;padding:clamp(30px,3.4vw,46px) clamp(26px,2.9vw,40px);display:flex;flex-direction:column;overflow:hidden;
   color:#fff;
   background:
     radial-gradient(120% 90% at 0% 0%, rgba(255,255,255,.20) 0%, rgba(255,255,255,0) 45%),
@@ -58,7 +59,7 @@ body{
 .brand::after{content:"";position:absolute;right:-90px;bottom:-90px;width:360px;height:360px;
   background:url("assets/simbolo-branco.png") center/contain no-repeat;opacity:.07;transform:rotate(-8deg);pointer-events:none}
 .brand .logo{height:46px;width:auto;align-self:flex-start;filter:drop-shadow(0 3px 12px rgba(0,0,0,.18))}
-.brand h1{margin-top:32px;font-size:33px;font-weight:800;line-height:1.14;letter-spacing:-.02em}
+.brand h1{margin-top:clamp(22px,2.6vw,32px);font-size:clamp(26px,2.35vw,33px);font-weight:800;line-height:1.14;letter-spacing:-.02em}
 .brand h1 .hl{color:#ffd7dd}
 .brand .lead{margin-top:14px;font-size:15.5px;font-weight:400;color:rgba(255,255,255,.85);line-height:1.5;max-width:330px}
 
@@ -84,7 +85,7 @@ body{
 .proof .stars{color:var(--gold);letter-spacing:1px}
 
 /* ───── PAINEL DO FORM (direita, branco) ───── */
-.form{position:relative;padding:42px 54px;display:flex;flex-direction:column;background:#fff}
+.form{position:relative;padding:clamp(30px,3.2vw,42px) clamp(28px,3.6vw,54px);display:flex;flex-direction:column;background:#fff}
 
 .fhead{display:flex;align-items:center;gap:18px;height:34px}
 .back{display:none;align-items:center;gap:7px;background:none;border:none;cursor:pointer;
@@ -103,14 +104,14 @@ body{
 
 .qnum{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;color:var(--red);letter-spacing:.04em}
 .qnum svg{width:17px;height:17px}
-.qtitle{font-size:30px;font-weight:700;line-height:1.18;letter-spacing:-.02em;color:var(--ink)}
+.qtitle{font-size:clamp(24px,2.2vw,30px);font-weight:700;line-height:1.18;letter-spacing:-.02em;color:var(--ink)}
 .qhint{font-size:14.5px;color:var(--body);font-weight:400;margin-top:-6px;line-height:1.5}
 
 /* inputs */
 .field{position:relative;margin-top:6px}
-.field input{width:100%;font-family:inherit;font-size:21px;font-weight:500;color:var(--ink);
+.field input{width:100%;font-family:inherit;font-size:clamp(18px,1.4vw,21px);font-weight:500;color:var(--ink);
   background:var(--field);border:1.5px solid var(--field-line);border-radius:var(--r-md);
-  padding:21px 20px;outline:none;transition:.22s}
+  padding:clamp(18px,1.5vw,21px) clamp(16px,1.4vw,20px);outline:none;transition:.22s}
 .field input::placeholder{color:#a7b3c2;font-weight:400}
 .field input:focus{border-color:var(--red);background:#fff;
   box-shadow:0 0 0 4px rgba(204,33,58,.13), 0 8px 24px -14px rgba(204,33,58,.5)}
@@ -171,21 +172,39 @@ body{
 .warnbox p b{color:var(--red);font-weight:700}
 
 /* ───── RESPONSIVO ───── */
-@media (max-width:860px){
-  body{padding:0;overflow:auto}
-  .app{grid-template-columns:1fr;height:auto;min-height:100dvh;border-radius:0}
-  .brand{padding:30px 26px 28px}
-  .brand::after{width:230px;height:230px;right:-60px;bottom:-60px}
-  .brand h1{font-size:26px;margin-top:22px}
-  .brand .lead{font-size:14px}
-  .steps{display:none}
-  .brand .spacer{display:none}.proof{margin-top:20px}
-  .form{padding:30px 26px 44px}
-  .qtitle{font-size:24px}
-  .field input{font-size:18px;padding:18px 16px}
-  .screens{min-height:330px}
+/* tablet / telas médias: dá mais respiro pro painel do form */
+@media (max-width:1024px){
+  .app{grid-template-columns:0.92fr 1.08fr}
 }
-@media (max-width:380px){.phone{flex-direction:column}.phone .ddd{width:100%}}
+
+/* mobile / portrait: empilha e ocupa a tela inteira (sem moldura) */
+@media (max-width:860px){
+  html{height:auto}
+  body{display:block;padding:0;overflow-x:hidden}
+  .app{width:100%;min-height:100dvh;grid-template-columns:1fr;grid-template-rows:auto 1fr;
+    border-radius:0;box-shadow:none;animation:none}
+  .brand{padding:max(26px,env(safe-area-inset-top)) clamp(20px,5.2vw,28px) 24px}
+  .brand::after{width:220px;height:220px;right:-56px;bottom:-56px}
+  .brand h1{font-size:clamp(23px,6.4vw,28px);margin-top:18px}
+  .brand .lead{font-size:14px;max-width:none}
+  .steps{display:none}
+  .brand .spacer{display:none}
+  .proof{margin-top:18px}
+  .form{padding:26px clamp(20px,5.2vw,28px) max(36px,env(safe-area-inset-bottom))}
+  .qtitle{font-size:clamp(22px,5.6vw,26px)}
+  .qhint{font-size:14px}
+  .field input{font-size:17px;padding:17px 16px}
+  .screens{min-height:clamp(280px,46vh,360px)}
+  .warnbox{max-width:none}
+  .success p{max-width:none}
+}
+
+/* celulares pequenos: DDD/número em coluna */
+@media (max-width:400px){
+  .phone{flex-direction:column}
+  .phone .ddd{width:100%;text-align:left}
+  .btn{width:100%;justify-content:center}
+}
 </style>
 </head>
 <body>
