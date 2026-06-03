@@ -5,6 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Processo Seletivo — King of Languages</title>
 <link rel="icon" href="assets/favicon.png">
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '748767274685022');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=748767274685022&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -391,8 +408,13 @@ body{
     if(!validate("whats")) return;
     document.getElementById("ok-nome").textContent = (data.nome.split(" ")[0]) || "candidato(a)";
     const msg = encodeURIComponent("Olá! Acabei de me candidatar à vaga de professor na King of Languages. Meu nome é " + data.nome + ".");
-    document.getElementById("go-wpp").onclick = ()=> window.open("https://wa.me/5519995979055?text="+msg, "_blank");
+    document.getElementById("go-wpp").onclick = ()=>{
+      if(window.fbq) fbq('track','Contact',{content_name:'Confirmação WhatsApp'});
+      window.open("https://wa.me/5519995979055?text="+msg, "_blank");
+    };
     show(order.indexOf("ok"));
+    // Meta Pixel: conversão de candidatura enviada
+    if(window.fbq) fbq('track','Lead',{content_name:'Processo Seletivo Professores',content_category:'recrutamento'});
     console.log("CANDIDATURA:", data); // TODO: enviar pra respondi/Kommo/webhook
   }
 
