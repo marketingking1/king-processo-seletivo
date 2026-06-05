@@ -364,6 +364,46 @@ body{
     return o.join(' · ');
   }
 
+  /* ── Sessão server-side: tracking pesado vai pro Supabase; o WhatsApp leva só o código ── */
+  const RH_SESSION_ENDPOINT = "https://quljxivtdmwpdrzbqobp.supabase.co/functions/v1/rh-lp-session";
+  function newSessionId(){
+    const A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";       // 36 chars → casa com [A-Z0-9]{11}
+    let s = "";
+    try{
+      const buf = new Uint8Array(11); crypto.getRandomValues(buf);
+      for(let i=0;i<11;i++) s += A[buf[i] % 36];
+    }catch(e){
+      for(let i=0;i<11;i++) s += A[Math.floor(Math.random()*36)];
+    }
+    return s;
+  }
+  // slug legível da campanha p/ a mensagem (ex.: leads-recrutamento-professores-vaga-norturna)
+  function origemSlug(){
+    const c = (utm.utm_campaign || "").toLowerCase()
+      
+      .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+    return c || "recrutamento-professores";
+  }
+  // grava a sessão (fbc/fbp/fbclid/utm/dados) keyed pelo session_id — write-only, nunca trava o fluxo
+  function storeSession(sid){
+    let fbc = getCookie('_fbc');
+    let cid = fbclid; try{ cid = cid || localStorage.getItem('kps_fbclid') || ''; }catch(e){}
+    if(!fbc && cid){ let ts=Date.now(); try{ ts=+localStorage.getItem('kps_fbclid_ts')||ts; }catch(e){} fbc='fb.1.'+ts+'.'+cid; }
+    const payload = Object.assign({
+      session_id: sid,
+      nome: data.nome, email: data.email, whats: data.ddd + data.num,
+      fbc: fbc || '', fbp: getCookie('_fbp') || '', fbclid: cid || '',
+      origem: origemTxt(),
+      page: location.href, referrer: document.referrer, user_agent: navigator.userAgent
+    }, utm);
+    try{
+      fetch(RH_SESSION_ENDPOINT, {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify(payload), keepalive: true
+      }).catch(()=>{});
+    }catch(e){}
+  }
+
   const screens = [...document.querySelectorAll(".screen")];
   const bar = document.getElementById("bar");
   const counter = document.getElementById("counter");
@@ -439,24 +479,21 @@ body{
   function submit(){
     if(!validate("whats")) return;
     document.getElementById("ok-nome").textContent = (data.nome.split(" ")[0]) || "candidato(a)";
-    const ref = fbRef();
-    const origem = origemTxt();
-    const extras = [
-      origem ? "(origem: " + origem + ")" : "",
-      ref ? "(rastreio: " + ref + ")" : ""
-    ].filter(Boolean).join("\n");
+    // gera id da sessão, guarda o tracking pesado no servidor e manda só o código limpo no WhatsApp
+    const sid = newSessionId();
+    storeSession(sid);
+    const codigo = origemSlug() + "|" + sid;
     const msg = encodeURIComponent(
       "Olá! Acabei de me candidatar à vaga de professor na King of Languages. Meu nome é " + data.nome + "."
-      + (extras ? "\n\n" + extras : "")
+      + "\n\n(cód. " + codigo + ")"
     );
     document.getElementById("go-wpp").onclick = ()=>{
       if(window.fbq) fbq('track','Contact', Object.assign({content_name:'Confirmação WhatsApp'}, utm));
       window.open("https://wa.me/5519995979055?text="+msg, "_blank");
     };
     show(order.indexOf("ok"));
-    // Meta Pixel: conversão de candidatura enviada
-    if(window.fbq) fbq('track','Lead', Object.assign({content_name:'Processo Seletivo Professores',content_category:'recrutamento'}, utm));
-    console.log("CANDIDATURA:", data); // TODO: enviar pra respondi/Kommo/webhook
+    // Meta Pixel: conversão de candidatura enviada (dedup via eventID = sid; tracking completo em rh_lp_sessions)
+    if(window.fbq) fbq('track','Lead', Object.assign({content_name:'Processo Seletivo Professores',content_category:'recrutamento'}, utm), {eventID: sid});
   }
 
   document.querySelectorAll("[data-next]").forEach(b=>b.addEventListener("click", next));
