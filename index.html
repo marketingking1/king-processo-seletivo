@@ -188,6 +188,50 @@ body{
 .warnbox p{font-size:13.5px;line-height:1.5;color:#6b2230;max-width:none;margin:0;text-align:left}
 .warnbox p b{color:var(--red);font-weight:700}
 
+/* ───── PERGUNTA REMUNERAÇÃO (Q4 · GATE) ───── */
+.screen[data-screen="remun"]{justify-content:flex-start;gap:13px}
+@media (min-width:861px){
+  .screen[data-screen="remun"]{overflow-y:auto;max-height:min(620px,calc(100dvh - 150px));padding-right:6px}
+  .screen[data-screen="remun"]::-webkit-scrollbar{width:7px}
+  .screen[data-screen="remun"]::-webkit-scrollbar-thumb{background:#d7dee8;border-radius:9999px}
+}
+.remun-lead{font-size:14px;color:var(--body);line-height:1.5}
+.remun-lead b{color:var(--ink);font-weight:600}
+.pay-table{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:2px}
+.pay-table .pt-head{display:flex;justify-content:space-between;align-items:center;
+  background:var(--navy);color:#fff;font-size:12.5px;font-weight:600;padding:10px 16px}
+.pay-row{display:flex;justify-content:space-between;align-items:center;
+  padding:11px 16px;font-size:14.5px;border-top:1px solid var(--line);background:#fff}
+.pay-row:nth-of-type(odd){background:var(--field)}
+.pay-row .freq{color:var(--ink);font-weight:600}
+.pay-row .val{color:var(--red);font-weight:700}
+.remun-ex{display:flex;gap:11px;background:#fff8e6;border:1px solid rgba(237,192,6,.45);
+  border-left:4px solid var(--gold);border-radius:12px;padding:13px 15px;font-size:13.5px;
+  color:#6a5400;line-height:1.5}
+.remun-ex svg{width:20px;height:20px;flex:none;margin-top:1px;stroke:#b8910a}
+.remun-ex b{color:#4d3d00;font-weight:700}
+.remun-q{font-size:16px;font-weight:700;color:var(--ink);margin-top:4px;line-height:1.35}
+.choices{display:flex;flex-direction:column;gap:11px;margin-top:2px}
+.choice{display:flex;align-items:center;gap:13px;cursor:pointer;font-family:inherit;text-align:left;
+  width:100%;padding:16px 18px;border-radius:var(--r-md);font-size:15.5px;font-weight:600;
+  border:1.6px solid var(--field-line);background:var(--field);color:var(--ink);transition:.2s}
+.choice .cdot{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid #c2cdda;
+  display:grid;place-items:center;transition:.2s}
+.choice .cdot svg{width:13px;height:13px}
+.choice small{display:block;font-size:12.5px;font-weight:400;color:var(--muted);margin-top:2px}
+.choice.yes:hover{border-color:#1aa356;background:#effaf2;box-shadow:0 10px 26px -16px rgba(26,163,86,.6)}
+.choice.yes:hover .cdot{border-color:#1aa356}
+.choice.no:hover{border-color:var(--red);background:#fff5f6}
+.choice.no:hover .cdot{border-color:var(--red)}
+
+/* ───── PROCESSO ENCERRADO (recusa do modelo) ───── */
+.screen.encerrado{align-items:center;justify-content:center;text-align:center;gap:16px}
+.endmark{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;
+  background:#f1f4f8;border:1px solid var(--line)}
+.endmark svg{width:42px;height:42px;stroke:var(--muted)}
+.encerrado h2{font-size:27px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.encerrado p{font-size:15px;color:var(--body);max-width:420px;line-height:1.55}
+
 /* ───── RESPONSIVO ───── */
 /* tablet / telas médias: dá mais respiro pro painel do form */
 @media (max-width:1024px){
@@ -301,10 +345,40 @@ body{
           <input id="i-num" class="num" type="tel" inputmode="numeric" maxlength="10" placeholder="00000-0000">
         </div>
         <div class="err" id="e-whats"></div>
-        <button class="btn" data-submit>Enviar candidatura
+        <button class="btn" data-next>Avançar
           <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </button>
-        <div class="enterhint">pressione <kbd>Enter ↵</kbd> para enviar</div>
+        <div class="enterhint">pressione <kbd>Enter ↵</kbd> para continuar</div>
+      </div>
+
+      <!-- Q4 REMUNERAÇÃO (GATE) -->
+      <div class="screen" data-screen="remun">
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 04</span>
+        <div class="qtitle">Como funciona a remuneração na King of Languages?</div>
+        <p class="remun-lead">Não trabalhamos com valor fixo por hora/aula e <b>não há renda mínima garantida</b>. Seu ganho mensal depende diretamente de quantos alunos fixos você tiver na agenda e com que frequência eles fazem aulas.</p>
+        <p class="remun-lead">Você começa sem alunos e vai construindo sua agenda ao longo do tempo, conforme sua disponibilidade e o encaixe com os alunos da escola.</p>
+        <div class="pay-table">
+          <div class="pt-head"><span>Tabela de valores — aulas de 30 minutos</span><span>por aluno/mês</span></div>
+          <div class="pay-row"><span class="freq">2x por semana</span><span class="val">R$ 60</span></div>
+          <div class="pay-row"><span class="freq">3x por semana</span><span class="val">R$ 90</span></div>
+          <div class="pay-row"><span class="freq">4x por semana</span><span class="val">R$ 120</span></div>
+          <div class="pay-row"><span class="freq">5x por semana</span><span class="val">R$ 150</span></div>
+        </div>
+        <div class="remun-ex">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 6v5m0 3h.01" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><b>Exemplo:</b> se você tiver 8 alunos fazendo 5 aulas por semana, seu ganho seria 8 × R$ 150 = <b>R$ 1.200/mês</b>. Esse é apenas um exemplo — o valor real vai depender da sua agenda.</span>
+        </div>
+        <div class="remun-q">Você leu, entendeu e está de acordo com esse modelo de remuneração?</div>
+        <div class="choices">
+          <button type="button" class="choice yes" id="remun-yes">
+            <span class="cdot"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#1aa356" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span>Sim, entendi e estou de acordo</span>
+          </button>
+          <button type="button" class="choice no" id="remun-no">
+            <span class="cdot"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="#cc213a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span>Não estou de acordo<small>O processo será encerrado aqui.</small></span>
+          </button>
+        </div>
       </div>
 
       <!-- SUCESSO -->
@@ -322,14 +396,21 @@ body{
         </div>
       </div>
 
+      <!-- ENCERRADO (recusa do modelo de remuneração) -->
+      <div class="screen encerrado" data-screen="encerrado">
+        <div class="endmark"><svg viewBox="0 0 24 24" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h2>Processo encerrado</h2>
+        <p>Tudo bem — como você não está de acordo com o modelo de remuneração, encerramos sua candidatura por aqui. Agradecemos o seu interesse na King of Languages e desejamos sucesso na sua jornada!</p>
+      </div>
+
     </div>
   </section>
 </main>
 
 <script>
 (function(){
-  const order = ["intro","nome","email","whats","ok"];
-  const stepOf = {intro:1, nome:1, email:1, whats:1, ok:2};
+  const order = ["intro","nome","email","whats","remun","ok"];
+  const stepOf = {intro:1, nome:1, email:1, whats:1, remun:1, ok:2};
   let idx = 0;
 
   /* ── Meta: captura de fbclid/fbc/fbp p/ match offline (CAPI) ── */
@@ -419,11 +500,11 @@ body{
     const name = order[i];
     screens.forEach(s=>s.classList.toggle("active", s.dataset.screen===name));
 
-    const pct = {intro:8, nome:34, email:60, whats:86, ok:100}[name];
+    const pct = {intro:8, nome:28, email:48, whats:68, remun:88, ok:100}[name];
     bar.style.width = pct + "%";
 
-    const qIndex = {nome:1, email:2, whats:3}[name];
-    counter.textContent = qIndex ? ("Pergunta " + qIndex + " de 3") : (name==="ok" ? "Concluído" : "");
+    const qIndex = {nome:1, email:2, whats:3, remun:4}[name];
+    counter.textContent = qIndex ? ("Pergunta " + qIndex + " de 4") : (name==="ok" ? "Concluído" : "");
 
     const cur = stepOf[name];
     stepsEls.forEach(el=>{
@@ -476,7 +557,8 @@ body{
   }
   function back(){ if(idx>0) show(idx-1); }
 
-  function submit(){
+  // GATE de remuneração — só quem ACEITA o modelo avança para o WhatsApp.
+  function aceitar(){
     if(!validate("whats")) return;
     document.getElementById("ok-nome").textContent = (data.nome.split(" ")[0]) || "candidato(a)";
     // gera id da sessão, guarda o tracking pesado no servidor e manda só o código limpo no WhatsApp
@@ -496,15 +578,24 @@ body{
     if(window.fbq) fbq('track','Lead', Object.assign({content_name:'Processo Seletivo Professores',content_category:'recrutamento'}, utm), {eventID: sid});
   }
 
+  // GATE de remuneração — recusa ENCERRA o processo: não grava sessão, não dispara Lead, não vai pro WhatsApp.
+  function recusar(){
+    screens.forEach(s=>s.classList.toggle("active", s.dataset.screen==="encerrado"));
+    bar.style.width = "100%";
+    backBtn.classList.remove("show");
+    fhead.style.display = "none";
+  }
+
   document.querySelectorAll("[data-next]").forEach(b=>b.addEventListener("click", next));
-  document.querySelectorAll("[data-submit]").forEach(b=>b.addEventListener("click", submit));
+  document.getElementById("remun-yes").addEventListener("click", aceitar);
+  document.getElementById("remun-no").addEventListener("click", recusar);
   backBtn.addEventListener("click", back);
 
   document.addEventListener("keydown", e=>{
     if(e.key!=="Enter") return;
     const name = order[idx];
-    if(name==="whats"){ e.preventDefault(); submit(); }
-    else if(name!=="ok"){ e.preventDefault(); next(); }
+    if(name==="ok" || name==="remun") return;   // remun é decisão por botão (Sim/Não)
+    e.preventDefault(); next();
   });
 
   const num = document.getElementById("i-num");
