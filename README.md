@@ -34,7 +34,7 @@ O envio hoje **valida os dados e mostra a tela de sucesso**, mas ainda **não sa
 os dados em lugar nenhum** — falta conectar a um destino (webhook do respondi,
 Kommo, Google Sheets ou e-mail). Ver o `TODO` em `submit()` no `index.html`.
 
-- Número de WhatsApp configurado: **+55 19 99597-9055** (editável em `submit()`).
+- Número de WhatsApp configurado: **+55 61 9156-4579** (editável em `submit()`).
 
 ## Estrutura
 
