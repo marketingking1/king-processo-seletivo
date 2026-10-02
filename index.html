@@ -450,6 +450,43 @@ body{
    mobile), mas e onde o candidato le as 3 etapas do processo.             */
 .stp .lbl{ color:#fff; }
 .stp .lbl small{ color:rgba(255,255,255,.92); }
+
+/* ═══ PRÉ-ENTREVISTA EM 9 PERGUNTAS — 2026-10-01 ════════════════════════════
+   Telas com mais de um campo (.sub), opções com estado selecionado (.sel),
+   textarea e telas longas com rolagem própria no desktop (mesma regra da
+   tela de remuneração).                                                    */
+.sub{display:flex;flex-direction:column;gap:7px}
+.sub[hidden]{display:none}
+.sublbl{font-size:14px;font-weight:600;color:var(--ink)}
+.sub .field{margin-top:0}
+.field input.short{max-width:160px}
+.field textarea{width:100%;font-family:inherit;font-size:16px;font-weight:500;color:var(--ink);line-height:1.5;
+  background:var(--field);border:1.5px solid var(--field-line);border-radius:var(--r-md);
+  padding:14px 16px;outline:none;transition:.22s;resize:vertical;min-height:96px}
+.field textarea::placeholder{color:#647084;font-weight:400}
+.field textarea:focus{border-color:var(--red);background:#fff;box-shadow:0 0 0 4px rgba(204,33,58,.10)}
+.choices.row{flex-direction:row;flex-wrap:wrap}
+.choices.row .choice{width:auto;flex:1 1 0;min-width:64px;padding:13px 14px}
+.choice.sel{border-color:var(--red);background:#fff5f6;box-shadow:0 10px 26px -18px rgba(204,33,58,.7)}
+.choice.sel .cdot{border-color:var(--red);background:var(--red);box-shadow:inset 0 0 0 4px #fff}
+.choice.yes.sel{border-color:#1aa356;background:#effaf2}
+.choice.yes.sel .cdot{border-color:#1aa356;background:#fff;box-shadow:none}
+.choice.no.sel .cdot{background:#fff;box-shadow:none}
+.conds{list-style:none;display:flex;flex-direction:column;gap:8px;margin:0;padding:0}
+.conds li{position:relative;padding-left:22px;font-size:14px;color:var(--body);line-height:1.45}
+.conds li::before{content:"";position:absolute;left:4px;top:7px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+.conds b{color:var(--ink);font-weight:600}
+.screen.long{justify-content:flex-start;gap:14px}
+@media (min-width:861px){
+  .screen.long{overflow-y:auto;max-height:min(620px,calc(100dvh - 150px));padding-right:6px}
+  .screen.long::-webkit-scrollbar{width:7px}
+  .screen.long::-webkit-scrollbar-thumb{background:#d7dee8;border-radius:9999px}
+}
+@media (max-width:860px){
+  .screen.long{gap:12px}
+  .field textarea{font-size:16px}
+}
+.encerrado h2:focus{outline:none}
 </style>
 </head>
 <body>
@@ -463,7 +500,7 @@ body{
     <p class="lead">Processo seletivo 100% online, rápido e direto ao ponto. Vamos começar?</p>
 
     <div class="steps" id="steps">
-      <div class="stp" data-s="1"><span class="dot">1</span><span class="lbl">Formulário<small>menos de 1 minuto</small></span></div>
+      <div class="stp" data-s="1"><span class="dot">1</span><span class="lbl">Formulário<small>cerca de 3 minutos</small></span></div>
       <div class="stp" data-s="2"><span class="dot">2</span><span class="lbl">Confirmação no WhatsApp<small>candidatura</small></span></div>
       <div class="stp" data-s="3"><span class="dot">3</span><span class="lbl">Entrevista<small>com nosso time</small></span></div>
     </div>
@@ -487,7 +524,7 @@ body{
 
       <!-- INTRO -->
       <div class="screen active" data-screen="intro">
-        <span class="badge-fast"><span class="pulse"></span>Leva menos de 1 minuto</span>
+        <span class="badge-fast"><span class="pulse"></span>Leva cerca de 3 minutos</span>
         <div class="qtitle">Processo Seletivo<br>King of Languages</div>
         <p class="qhint">Que bom que você quer fazer parte do nosso time!<br>O processo é rápido e tem apenas 3 etapas:</p>
         <div class="intro-list">
@@ -498,46 +535,52 @@ body{
         <button class="btn" data-next>Começar <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
       </div>
 
-      <!-- Q1 NOME -->
-      <div class="screen" data-screen="nome">
+      <!-- P1 DADOS PESSOAIS (nacionalidade é excludente) -->
+      <div class="screen long" data-screen="dados">
         <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 01</span>
-        <label class="qtitle" for="i-nome">Qual é o seu nome completo?</label>
-        <div class="field"><input id="i-nome" type="text" autocomplete="name" aria-describedby="e-nome" placeholder="Digite seu nome aqui..."></div>
-        <div class="err" id="e-nome" role="alert" aria-live="polite"></div>
-        <button class="btn" data-next>Avançar <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-        <div class="enterhint">pressione <kbd>Enter ↵</kbd> para continuar</div>
-      </div>
-
-      <!-- Q2 EMAIL -->
-      <div class="screen" data-screen="email">
-        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 02</span>
-        <label class="qtitle" for="i-email">Qual o seu melhor e-mail?</label>
-        <p class="qhint">Ele será usado durante todo o processo seletivo.</p>
-        <div class="field"><input id="i-email" type="email" autocomplete="email" inputmode="email" aria-describedby="e-email" placeholder="exemplo@email.com"></div>
-        <div class="err" id="e-email" role="alert" aria-live="polite"></div>
-        <button class="btn" data-next>Avançar <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-        <div class="enterhint">pressione <kbd>Enter ↵</kbd> para continuar</div>
-      </div>
-
-      <!-- Q3 WHATSAPP -->
-      <div class="screen" data-screen="whats">
-        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 03</span>
-        <label class="qtitle" for="i-num">Seu número de WhatsApp</label>
-        <p class="qhint">Com DDD — é por ele que vamos confirmar sua candidatura.</p>
-        <div class="field phone">
-          <input id="i-ddd" class="ddd" type="tel" inputmode="numeric" maxlength="2" aria-label="DDD" aria-describedby="e-whats" placeholder="(11)">
-          <input id="i-num" class="num" type="tel" inputmode="numeric" maxlength="10" aria-describedby="e-whats" placeholder="00000-0000">
+        <div class="qtitle">Seus dados</div>
+        <p class="qhint">Nome completo, idade, nacionalidade e WhatsApp com DDD.</p>
+        <div class="sub">
+          <label class="sublbl" for="i-nome">Nome completo</label>
+          <div class="field"><input id="i-nome" type="text" autocomplete="name" aria-describedby="e-dados" placeholder="Digite seu nome aqui..."></div>
         </div>
-        <div class="err" id="e-whats" role="alert" aria-live="polite"></div>
-        <button class="btn" data-next>Avançar
-          <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </button>
+        <div class="sub">
+          <label class="sublbl" for="i-idade">Idade</label>
+          <div class="field"><input id="i-idade" class="short" type="text" inputmode="numeric" maxlength="2" aria-describedby="e-dados" placeholder="Ex.: 28"></div>
+        </div>
+        <div class="sub">
+          <span class="sublbl" id="l-nac">Nacionalidade</span>
+          <div class="choices row" role="radiogroup" aria-labelledby="l-nac" data-group="nacionalidade">
+            <button type="button" class="choice" role="radio" aria-checked="false" data-value="Brasileira"><span class="cdot"></span><span>Brasileira</span></button>
+            <button type="button" class="choice" role="radio" aria-checked="false" data-value="Outra"><span class="cdot"></span><span>Outra</span></button>
+          </div>
+        </div>
+        <div class="sub">
+          <label class="sublbl" for="i-num">WhatsApp com DDD</label>
+          <div class="field phone">
+            <input id="i-ddd" class="ddd" type="tel" inputmode="numeric" maxlength="2" aria-label="DDD" aria-describedby="e-dados" placeholder="(11)">
+            <input id="i-num" class="num" type="tel" inputmode="numeric" maxlength="10" aria-describedby="e-dados" placeholder="00000-0000">
+          </div>
+        </div>
+        <div class="err" id="e-dados" role="alert" aria-live="polite"></div>
+        <button class="btn" data-next>Avançar <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
         <div class="enterhint">pressione <kbd>Enter ↵</kbd> para continuar</div>
       </div>
 
-      <!-- Q4 REMUNERAÇÃO (GATE) -->
+      <!-- P2 PORTUGUÊS (excludente abaixo de Avançado) -->
+      <div class="screen" data-screen="portugues">
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 02</span>
+        <div class="qtitle" id="l-pt">Qual seu nível de proficiência em Português?</div>
+        <div class="choices" role="radiogroup" aria-labelledby="l-pt" data-group="portugues" data-auto>
+          <button type="button" class="choice" role="radio" aria-checked="false" data-value="Básico"><span class="cdot"></span><span>Básico</span></button>
+          <button type="button" class="choice" role="radio" aria-checked="false" data-value="Intermediário"><span class="cdot"></span><span>Intermediário</span></button>
+          <button type="button" class="choice" role="radio" aria-checked="false" data-value="Avançado"><span class="cdot"></span><span>Avançado</span></button>
+        </div>
+      </div>
+
+      <!-- P3 REMUNERAÇÃO (excludente se Não) -->
       <div class="screen" data-screen="remun">
-        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 04</span>
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 03</span>
         <div class="qtitle">Como funciona a remuneração na King of Languages?</div>
         <p class="remun-lead">Não trabalhamos com valor fixo por hora/aula e <b>não há renda mínima garantida</b>. Seu ganho mensal depende diretamente de quantos alunos fixos você tiver na agenda e com que frequência eles fazem aulas.</p>
         <p class="remun-lead">Você começa sem alunos e vai construindo sua agenda ao longo do tempo, conforme sua disponibilidade e o encaixe com os alunos da escola.</p>
@@ -550,19 +593,123 @@ body{
         </div>
         <div class="remun-ex">
           <svg viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 6v5m0 3h.01" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span><b>Exemplo:</b> se você tiver 8 alunos fazendo 5 aulas por semana, seu ganho seria 8 × R$ 150 = <b>R$ 1.200/mês</b>. Esse é apenas um exemplo — o valor real vai depender da sua agenda.</span>
+          <span>Com a agenda formada, o ganho mensal fica, em geral, na faixa de <b>R$ 900 a R$ 2.000</b>. Exemplo: 8 alunos fazendo 5 aulas por semana = 8 × R$ 150 = <b>R$ 1.200/mês</b>. O valor real vai depender da sua agenda.</span>
         </div>
-        <div class="remun-q">Você leu, entendeu e está de acordo com esse modelo de remuneração?</div>
-        <div class="choices">
-          <button type="button" class="choice yes" id="remun-yes">
+        <div class="remun-q" id="l-remun">Você está de acordo com esse modelo de remuneração?</div>
+        <div class="choices" role="radiogroup" aria-labelledby="l-remun" data-group="remun">
+          <button type="button" class="choice yes" role="radio" aria-checked="false" data-value="Sim">
             <span class="cdot"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#1aa356" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span>Sim, entendi e estou de acordo</span>
+            <span>Sim, estou de acordo</span>
           </button>
-          <button type="button" class="choice no" id="remun-no">
+          <button type="button" class="choice no" role="radio" aria-checked="false" data-value="Não">
             <span class="cdot"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="#cc213a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span>Não estou de acordo<small>O processo será encerrado aqui.</small></span>
           </button>
         </div>
+        <div class="sub reveal" id="remun-motivo-box" hidden>
+          <label class="sublbl" for="i-remun-motivo">Nos conte por que ele faz sentido pra você agora</label>
+          <div class="field"><textarea id="i-remun-motivo" rows="3" maxlength="1000" aria-describedby="e-remun" placeholder="Escreva aqui..."></textarea></div>
+        </div>
+        <div class="err" id="e-remun" role="alert" aria-live="polite"></div>
+        <button class="btn" data-next id="remun-next" hidden>Avançar <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </div>
+
+      <!-- P4 NÍVEL QUE ENSINA -->
+      <div class="screen" data-screen="nivel">
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 04</span>
+        <div class="qtitle" id="l-nivel">Qual nível de estudante você se sente mais apto(a) para ensinar?</div>
+        <div class="choices" role="radiogroup" aria-labelledby="l-nivel" data-group="nivel" data-auto>
+          <button type="button" class="choice" role="radio" aria-checked="false" data-value="Básico"><span class="cdot"></span><span>Básico</span></button>
+          <button type="button" class="choice" role="radio" aria-checked="false" data-value="Intermediário"><span class="cdot"></span><span>Intermediário</span></button>
+          <button type="button" class="choice" role="radio" aria-checked="false" data-value="Avançado"><span class="cdot"></span><span>Avançado</span></button>
+          <button type="button" class="choice" role="radio" aria-checked="false" data-value="Todos os níveis"><span class="cdot"></span><span>Todos os níveis</span></button>
+        </div>
+      </div>
+
+      <!-- P5 DISPONIBILIDADE (excludente se não atende) -->
+      <div class="screen long" data-screen="dispo">
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 05</span>
+        <div class="qtitle" id="l-dispo">Você tem disponibilidade para estes horários?</div>
+        <ul class="conds">
+          <li>Período <b>noturno (18h às 22h30)</b> ou os <b>dois períodos</b>: manhã (7h às 9h) e noite (18h às 22h30)</li>
+          <li>De <b>segunda a sexta</b> (ou no mínimo <b>4x por semana</b>)</li>
+          <li>Mantendo essa disponibilidade por, no mínimo, <b>6 meses</b></li>
+          <li>Com <b>início imediato</b> em caso de aprovação</li>
+        </ul>
+        <div class="choices" role="radiogroup" aria-labelledby="l-dispo" data-group="dispo" data-auto>
+          <button type="button" class="choice" role="radio" aria-checked="false" data-value="Noite (18h às 22h30)"><span class="cdot"></span><span>Sim, no período noturno<small>18h às 22h30, atendendo a todas as condições</small></span></button>
+          <button type="button" class="choice" role="radio" aria-checked="false" data-value="Manhã (7h às 9h) e noite (18h às 22h30)"><span class="cdot"></span><span>Sim, nos dois períodos<small>Manhã (7h às 9h) e noite (18h às 22h30), atendendo a todas as condições</small></span></button>
+          <button type="button" class="choice no" role="radio" aria-checked="false" data-value="Não"><span class="cdot"></span><span>Não atendo a uma ou mais dessas condições<small>O processo será encerrado aqui.</small></span></button>
+        </div>
+      </div>
+
+      <!-- P6 MEI (excludente se não pretende abrir) -->
+      <div class="screen" data-screen="mei">
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 06</span>
+        <div class="qtitle" id="l-mei">Você já possui MEI ou tem disponibilidade para abrir em caso de aprovação?</div>
+        <div class="choices" role="radiogroup" aria-labelledby="l-mei" data-group="mei">
+          <button type="button" class="choice" role="radio" aria-checked="false" data-value="Sim, já possuo MEI"><span class="cdot"></span><span>Sim, já possuo MEI</span></button>
+          <button type="button" class="choice" role="radio" aria-checked="false" data-value="Não, mas posso abrir em caso de aprovação"><span class="cdot"></span><span>Não, mas posso abrir em caso de aprovação</span></button>
+          <button type="button" class="choice no" role="radio" aria-checked="false" data-value="Não e não pretendo abrir"><span class="cdot"></span><span>Não e não pretendo abrir<small>O processo será encerrado aqui.</small></span></button>
+        </div>
+        <div class="sub reveal" id="cnpj-box" hidden>
+          <label class="sublbl" for="i-cnpj">Número do MEI/CNPJ</label>
+          <div class="field"><input id="i-cnpj" type="text" inputmode="numeric" maxlength="18" aria-describedby="e-mei" placeholder="00.000.000/0000-00"></div>
+        </div>
+        <div class="err" id="e-mei" role="alert" aria-live="polite"></div>
+        <button class="btn" data-next id="mei-next" hidden>Avançar <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </div>
+
+      <!-- P7 COMPUTADOR (excludente se Não) -->
+      <div class="screen" data-screen="pc">
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 07</span>
+        <div class="qtitle" id="l-pc">Você possui notebook ou computador com webcam?</div>
+        <div class="choices" role="radiogroup" aria-labelledby="l-pc" data-group="pc" data-auto>
+          <button type="button" class="choice yes" role="radio" aria-checked="false" data-value="Sim"><span class="cdot"></span><span>Sim</span></button>
+          <button type="button" class="choice no" role="radio" aria-checked="false" data-value="Não"><span class="cdot"></span><span>Não<small>O processo será encerrado aqui.</small></span></button>
+        </div>
+      </div>
+
+      <!-- P8 FORMAÇÃO / EXPERIÊNCIA / INGLÊS -->
+      <div class="screen long" data-screen="exp">
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 08</span>
+        <div class="qtitle">Sua formação e experiência</div>
+        <div class="sub">
+          <label class="sublbl" for="i-formacao">Qual é sua formação?</label>
+          <div class="field"><input id="i-formacao" type="text" maxlength="300" aria-describedby="e-exp" placeholder="Ex.: Licenciatura em Letras – Inglês"></div>
+        </div>
+        <div class="sub">
+          <span class="sublbl" id="l-atuou">Você já atuou como professor(a) de inglês?</span>
+          <div class="choices row" role="radiogroup" aria-labelledby="l-atuou" data-group="atuou">
+            <button type="button" class="choice" role="radio" aria-checked="false" data-value="Sim"><span class="cdot"></span><span>Sim</span></button>
+            <button type="button" class="choice" role="radio" aria-checked="false" data-value="Não"><span class="cdot"></span><span>Não</span></button>
+          </div>
+        </div>
+        <div class="sub reveal" id="tempo-box" hidden>
+          <label class="sublbl" for="i-tempo">Por quanto tempo?</label>
+          <div class="field"><input id="i-tempo" type="text" maxlength="120" aria-describedby="e-exp" placeholder="Ex.: 3 anos"></div>
+        </div>
+        <div class="sub">
+          <span class="sublbl" id="l-ingles">Qual seu nível de proficiência em inglês?</span>
+          <div class="choices row" role="radiogroup" aria-labelledby="l-ingles" data-group="ingles">
+            <button type="button" class="choice" role="radio" aria-checked="false" data-value="B1"><span class="cdot"></span><span>B1</span></button>
+            <button type="button" class="choice" role="radio" aria-checked="false" data-value="B2"><span class="cdot"></span><span>B2</span></button>
+            <button type="button" class="choice" role="radio" aria-checked="false" data-value="C1"><span class="cdot"></span><span>C1</span></button>
+            <button type="button" class="choice" role="radio" aria-checked="false" data-value="C2"><span class="cdot"></span><span>C2</span></button>
+          </div>
+        </div>
+        <div class="err" id="e-exp" role="alert" aria-live="polite"></div>
+        <button class="btn" data-next>Avançar <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </div>
+
+      <!-- P9 PARÁGRAFO EM INGLÊS -->
+      <div class="screen" data-screen="english">
+        <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 09</span>
+        <label class="qtitle" for="i-english">In English, please write a short paragraph about your experience teaching English and why you'd like to join King of Languages.</label>
+        <p class="qhint">4 to 6 sentences.</p>
+        <div class="field"><textarea id="i-english" rows="6" maxlength="2000" lang="en" aria-describedby="e-english" placeholder="Write here..."></textarea></div>
+        <div class="err" id="e-english" role="alert" aria-live="polite"></div>
+        <button class="btn" id="enviar">Enviar candidatura <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
       </div>
 
       <!-- SUCESSO -->
@@ -580,11 +727,11 @@ body{
         </div>
       </div>
 
-      <!-- ENCERRADO (recusa do modelo de remuneração) -->
+      <!-- ENCERRADO (critério excludente) -->
       <div class="screen encerrado" data-screen="encerrado">
         <div class="endmark"><svg viewBox="0 0 24 24" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h2>Processo encerrado</h2>
-        <p>Tudo bem — como você não está de acordo com o modelo de remuneração, encerramos sua candidatura por aqui. Agradecemos o seu interesse na King of Languages e desejamos sucesso na sua jornada!</p>
+        <h2 id="fim-titulo" tabindex="-1">Processo encerrado</h2>
+        <p><span id="fim-motivo"></span> Agradecemos o seu interesse na King of Languages e desejamos sucesso na sua jornada!</p>
       </div>
 
     </div>
@@ -593,8 +740,9 @@ body{
 
 <script>
 (function(){
-  const order = ["intro","nome","email","whats","remun","ok"];
-  const stepOf = {intro:1, nome:1, email:1, whats:1, remun:1, ok:2};
+  const order = ["intro","dados","portugues","remun","nivel","dispo","mei","pc","exp","english","ok"];
+  const QN = {dados:1, portugues:2, remun:3, nivel:4, dispo:5, mei:6, pc:7, exp:8, english:9};
+  const TOTAL_Q = 9;
   let idx = 0;
 
   /* ── Meta: captura de fbclid/fbc/fbp p/ match offline (CAPI) ── */
@@ -602,17 +750,6 @@ body{
   const getCookie = n => { const m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)'); return m?m.pop():''; };
   const fbclid = qp.get('fbclid') || '';
   if(fbclid){ try{ localStorage.setItem('kps_fbclid', fbclid); localStorage.setItem('kps_fbclid_ts', Date.now()); }catch(e){} }
-  function fbRef(){
-    let fbc = getCookie('_fbc');
-    if(!fbc){
-      let cid = fbclid, ts = Date.now();
-      try{ cid = cid || localStorage.getItem('kps_fbclid') || ''; ts = +localStorage.getItem('kps_fbclid_ts') || ts; }catch(e){}
-      if(cid) fbc = 'fb.1.'+ts+'.'+cid;
-    }
-    if(!fbc) return '';            // só rastreia quando veio de anúncio (tem fbclid/fbc)
-    const fbp = getCookie('_fbp');
-    return 'fbc=' + fbc + (fbp ? ' fbp=' + fbp : '');
-  }
 
   /* ── Meta: captura dinâmica dos UTMs (parâmetros de URL do anúncio) ── */
   const UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_id','utm_term','utm_content','placement'];
@@ -629,7 +766,7 @@ body{
     return o.join(' · ');
   }
 
-  /* ── Sessão server-side: tracking pesado vai pro Supabase; o WhatsApp leva só o código ── */
+  /* ── Sessão server-side: tracking + respostas vão pro Supabase; o WhatsApp leva só o código ── */
   const RH_SESSION_ENDPOINT = "https://quljxivtdmwpdrzbqobp.supabase.co/functions/v1/rh-lp-session";
   function newSessionId(){
     const A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";       // 36 chars → casa com [A-Z0-9]{11}
@@ -645,21 +782,39 @@ body{
   // slug legível da campanha p/ a mensagem (ex.: leads-recrutamento-professores-vaga-norturna)
   function origemSlug(){
     const c = (utm.utm_campaign || "").toLowerCase()
-      
       .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
     return c || "recrutamento-professores";
   }
-  // grava a sessão (fbc/fbp/fbclid/utm/dados) keyed pelo session_id — write-only, nunca trava o fluxo
+  // grava a sessão (tracking + respostas da pré-entrevista) keyed pelo session_id — write-only, nunca trava o fluxo
   function storeSession(sid){
     let fbc = getCookie('_fbc');
     let cid = fbclid; try{ cid = cid || localStorage.getItem('kps_fbclid') || ''; }catch(e){}
     if(!fbc && cid){ let ts=Date.now(); try{ ts=+localStorage.getItem('kps_fbclid_ts')||ts; }catch(e){} fbc='fb.1.'+ts+'.'+cid; }
     const payload = Object.assign({
       session_id: sid,
-      nome: data.nome, email: data.email, whats: data.ddd + data.num,
+      nome: data.nome, email: '', whats: data.ddd + data.num,
       fbc: fbc || '', fbp: getCookie('_fbp') || '', fbclid: cid || '',
       origem: origemTxt(),
-      page: location.href, referrer: document.referrer, user_agent: navigator.userAgent
+      page: location.href, referrer: document.referrer, user_agent: navigator.userAgent,
+      respostas: {
+        nome: data.nome,
+        idade: data.idade,
+        nacionalidade: data.nacionalidade,
+        whats: data.ddd + data.num,
+        nivel_portugues: data.portugues,
+        aceita_modelo_remuneracao: data.remun,
+        motivo_remuneracao: data.remun_motivo,
+        niveis_que_ensina: data.nivel,
+        periodo_disponivel: data.dispo,
+        possui_mei: data.mei,
+        cnpj_mei: data.cnpj,
+        possui_computador_webcam: data.pc,
+        formacao: data.formacao,
+        atuou_como_professor: data.atuou,
+        tempo_experiencia: data.tempo,
+        nivel_ingles: data.ingles,
+        paragrafo_ingles: data.english
+      }
     }, utm);
     try{
       fetch(RH_SESSION_ENDPOINT, {
@@ -676,21 +831,24 @@ body{
   const fhead = document.querySelector(".fhead");
   const stepsEls = [...document.querySelectorAll("#steps .stp")];
   const CHECK = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const $ = id => document.getElementById(id);
 
-  const data = {nome:"", email:"", ddd:"", num:""};
+  const data = {
+    nome:"", idade:"", nacionalidade:"", ddd:"", num:"",
+    portugues:"", remun:"", remun_motivo:"", nivel:"", dispo:"",
+    mei:"", cnpj:"", pc:"", formacao:"", atuou:"", tempo:"", ingles:"", english:""
+  };
 
   function show(i){
     idx = i;
     const name = order[i];
     screens.forEach(s=>s.classList.toggle("active", s.dataset.screen===name));
 
-    const pct = {intro:8, nome:28, email:48, whats:68, remun:88, ok:100}[name];
-    bar.style.width = pct + "%";
+    const q = QN[name];
+    bar.style.width = (name==="intro" ? 6 : name==="ok" ? 100 : Math.round(6 + q*(90/TOTAL_Q))) + "%";
+    counter.textContent = q ? ("Pergunta " + q + " de " + TOTAL_Q) : (name==="ok" ? "Concluído" : "");
 
-    const qIndex = {nome:1, email:2, whats:3, remun:4}[name];
-    counter.textContent = qIndex ? ("Pergunta " + qIndex + " de 4") : (name==="ok" ? "Concluído" : "");
-
-    const cur = stepOf[name];
+    const cur = name==="ok" ? 2 : 1;
     stepsEls.forEach(el=>{
       const s = +el.dataset.s;
       const dot = el.querySelector(".dot");
@@ -702,50 +860,125 @@ body{
     backBtn.classList.toggle("show", i>0 && name!=="ok");
     fhead.style.display = (name==="ok") ? "none" : "flex";
 
-    const inp = screens[i].querySelector("input");
-    if(inp) setTimeout(()=>inp.focus(), 420);
+    const scr = screens.find(s=>s.dataset.screen===name);
+    scr.scrollTop = 0;
+    const inp = scr.querySelector("input, textarea");
+    if(inp && !inp.closest("[hidden]")) setTimeout(()=>inp.focus({preventScroll:true}), 420);
   }
 
   function showErr(id, msg){
-    const e = document.getElementById(id);
+    const e = $(id);
     e.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke="#cc213a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' + msg;
     e.classList.add("show");
+    return false;
   }
-  function clearErr(id){ const e=document.getElementById(id); e.classList.remove("show"); e.textContent=""; }
+  function clearErr(id){ const e=$(id); e.classList.remove("show"); e.textContent=""; }
+  const val = id => $(id).value.trim();
+
+  /* ── Encerramento por critério excludente: não grava sessão, não dispara Lead, não vai pro WhatsApp ── */
+  const MOTIVOS_FIM = {
+    nacionalidade: "No momento, esta vaga é exclusiva para candidatos de nacionalidade brasileira.",
+    portugues: "Para esta vaga é necessário ter nível avançado de Português.",
+    remun: "Como você não está de acordo com o modelo de remuneração, encerramos sua candidatura por aqui.",
+    dispo: "Para esta vaga é necessário atender a todas as condições de disponibilidade informadas.",
+    mei: "Para esta vaga é necessário ter MEI ou poder abrir um em caso de aprovação.",
+    pc: "Para esta vaga é necessário ter notebook ou computador com webcam para dar as aulas."
+  };
+  function encerrar(motivo){
+    $("fim-motivo").textContent = MOTIVOS_FIM[motivo] || "";
+    screens.forEach(s=>s.classList.toggle("active", s.dataset.screen==="encerrado"));
+    bar.style.width = "100%";
+    backBtn.classList.remove("show");
+    fhead.style.display = "none";
+    setTimeout(()=>$("fim-titulo").focus(), 50);
+  }
 
   function validate(name){
-    if(name==="nome"){
-      const v = document.getElementById("i-nome").value.trim();
-      if(v.length<3 || !v.includes(" ")){ showErr("e-nome","Digite seu nome e sobrenome."); return false; }
-      data.nome = v; clearErr("e-nome"); return true;
+    if(name==="dados"){
+      const nome = val("i-nome").replace(/\s+/g," ");
+      if(nome.length<3 || !nome.includes(" ")) return showErr("e-dados","Digite seu nome e sobrenome.");
+      const idade = val("i-idade").replace(/\D/g,"");
+      if(!idade || +idade<16 || +idade>90) return showErr("e-dados","Informe sua idade.");
+      if(!data.nacionalidade) return showErr("e-dados","Selecione sua nacionalidade.");
+      const ddd = val("i-ddd").replace(/\D/g,"");
+      const num = val("i-num").replace(/\D/g,"");
+      if(ddd.length!==2) return showErr("e-dados","Informe o DDD (2 dígitos).");
+      if(num.length<8) return showErr("e-dados","Informe um número de WhatsApp válido.");
+      Object.assign(data, {nome, idade, ddd, num}); clearErr("e-dados");
+      if(data.nacionalidade!=="Brasileira"){ encerrar("nacionalidade"); return false; }
+      return true;
     }
-    if(name==="email"){
-      const v = document.getElementById("i-email").value.trim();
-      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){ showErr("e-email","Hmm, esse e-mail não parece válido."); return false; }
-      data.email = v; clearErr("e-email"); return true;
+    if(name==="remun"){
+      if(data.remun!=="Sim") return showErr("e-remun","Selecione uma opção.");
+      const m = val("i-remun-motivo");
+      if(m.length<10) return showErr("e-remun","Conte em poucas palavras por que o modelo faz sentido pra você agora.");
+      data.remun_motivo = m; clearErr("e-remun"); return true;
     }
-    if(name==="whats"){
-      const ddd = document.getElementById("i-ddd").value.replace(/\D/g,"");
-      const num = document.getElementById("i-num").value.replace(/\D/g,"");
-      if(ddd.length!==2){ showErr("e-whats","Informe o DDD (2 dígitos)."); return false; }
-      if(num.length<8){ showErr("e-whats","Informe um número de WhatsApp válido."); return false; }
-      data.ddd=ddd; data.num=num; clearErr("e-whats"); return true;
+    if(name==="mei"){
+      if(!data.mei) return showErr("e-mei","Selecione uma opção.");
+      if(data.mei==="Sim, já possuo MEI"){
+        const c = val("i-cnpj").replace(/\D/g,"");
+        if(c.length!==14) return showErr("e-mei","Informe o número do MEI/CNPJ (14 dígitos).");
+        data.cnpj = val("i-cnpj");
+      } else data.cnpj = "";
+      clearErr("e-mei"); return true;
+    }
+    if(name==="exp"){
+      const f = val("i-formacao");
+      if(f.length<2) return showErr("e-exp","Informe sua formação.");
+      if(!data.atuou) return showErr("e-exp","Conte se você já atuou como professor(a) de inglês.");
+      const t = val("i-tempo");
+      if(data.atuou==="Sim" && t.length<1) return showErr("e-exp","Informe por quanto tempo atuou como professor(a).");
+      if(!data.ingles) return showErr("e-exp","Selecione seu nível de inglês.");
+      data.formacao = f; data.tempo = data.atuou==="Sim" ? t : ""; clearErr("e-exp"); return true;
+    }
+    if(name==="english"){
+      const t = val("i-english");
+      if(t.length<120) return showErr("e-english","Please write at least 4 sentences.");
+      data.english = t; clearErr("e-english"); return true;
     }
     return true;
   }
 
   function next(){
     const name = order[idx];
-    if(["nome","email","whats"].includes(name) && !validate(name)) return;
+    if(!validate(name)) return;
     if(idx < order.length-1) show(idx+1);
   }
   function back(){ if(idx>0) show(idx-1); }
 
-  // GATE de remuneração — só quem ACEITA o modelo avança para o WhatsApp.
-  function aceitar(){
-    if(!validate("whats")) return;
-    document.getElementById("ok-nome").textContent = (data.nome.split(" ")[0]) || "candidato(a)";
-    // gera id da sessão, guarda o tracking pesado no servidor e manda só o código limpo no WhatsApp
+  /* ── Opções (radiogroups) ── */
+  const EXCLUDE = { portugues:["Básico","Intermediário"], dispo:["Não"], mei:["Não e não pretendo abrir"], pc:["Não"], remun:["Não"] };
+  document.querySelectorAll("[data-group]").forEach(g=>{
+    const group = g.dataset.group;
+    const opts = [...g.querySelectorAll(".choice")];
+    opts.forEach(o=>o.addEventListener("click", ()=>{
+      opts.forEach(x=>{ const on = x===o; x.classList.toggle("sel", on); x.setAttribute("aria-checked", on ? "true" : "false"); });
+      const v = o.dataset.value;
+      data[group] = v;
+      if((EXCLUDE[group]||[]).includes(v)){ setTimeout(()=>encerrar(group), 220); return; }
+      if(group==="remun"){
+        $("remun-motivo-box").hidden = false; $("remun-next").hidden = false;
+        setTimeout(()=>$("i-remun-motivo").focus(), 50);
+      }
+      if(group==="mei"){
+        const temMei = v==="Sim, já possuo MEI";
+        $("cnpj-box").hidden = !temMei; $("mei-next").hidden = false;
+        if(temMei) setTimeout(()=>$("i-cnpj").focus(), 50);
+      }
+      if(group==="atuou"){
+        $("tempo-box").hidden = v!=="Sim";
+        if(v==="Sim") setTimeout(()=>$("i-tempo").focus(), 50);
+      }
+      if(g.hasAttribute("data-auto")) setTimeout(next, 260);
+    }));
+  });
+
+  /* ── Envio final: só quem passou por todos os critérios chega aqui ── */
+  function enviar(){
+    if(!validate("english")) return;
+    $("ok-nome").textContent = (data.nome.split(" ")[0]) || "candidato(a)";
+    // gera id da sessão, guarda tracking + respostas no servidor e manda só o código limpo no WhatsApp
     const sid = newSessionId();
     storeSession(sid);
     const codigo = origemSlug() + "|" + sid;
@@ -753,7 +986,7 @@ body{
       "Olá! Acabei de me candidatar à vaga de professor na King of Languages. Meu nome é " + data.nome + "."
       + "\n\n(cód. " + codigo + ")"
     );
-    document.getElementById("go-wpp").onclick = ()=>{
+    $("go-wpp").onclick = ()=>{
       if(window.fbq) fbq('track','Contact', Object.assign({content_name:'Confirmação WhatsApp'}, utm));
       window.open("https://wa.me/5511936212414?text="+msg, "_blank");
     };
@@ -762,35 +995,43 @@ body{
     if(window.fbq) fbq('track','Lead', Object.assign({content_name:'Processo Seletivo Professores',content_category:'recrutamento'}, utm), {eventID: sid});
   }
 
-  // GATE de remuneração — recusa ENCERRA o processo: não grava sessão, não dispara Lead, não vai pro WhatsApp.
-  function recusar(){
-    screens.forEach(s=>s.classList.toggle("active", s.dataset.screen==="encerrado"));
-    bar.style.width = "100%";
-    backBtn.classList.remove("show");
-    fhead.style.display = "none";
-  }
-
   document.querySelectorAll("[data-next]").forEach(b=>b.addEventListener("click", next));
-  document.getElementById("remun-yes").addEventListener("click", aceitar);
-  document.getElementById("remun-no").addEventListener("click", recusar);
+  $("enviar").addEventListener("click", enviar);
   backBtn.addEventListener("click", back);
 
   document.addEventListener("keydown", e=>{
-    if(e.key!=="Enter") return;
+    if(e.key!=="Enter" || e.shiftKey) return;
+    if(e.target && e.target.tagName==="TEXTAREA") return;     // Enter quebra linha no texto livre
+    if(e.target && e.target.classList && e.target.classList.contains("choice")) return;
     const name = order[idx];
-    if(name==="ok" || name==="remun") return;   // remun é decisão por botão (Sim/Não)
-    e.preventDefault(); next();
+    if(name==="intro"){ e.preventDefault(); next(); return; }
+    if(["dados","remun","mei","exp"].includes(name)){
+      const btn = screens[idx].querySelector("[data-next]");
+      if(btn && !btn.hidden){ e.preventDefault(); next(); }
+    }
   });
 
-  const num = document.getElementById("i-num");
+  /* ── Máscaras ── */
+  const num = $("i-num");
   num.addEventListener("input", ()=>{
     let v = num.value.replace(/\D/g,"").slice(0,9);
     if(v.length>5) v = v.slice(0,5)+"-"+v.slice(5);
     num.value = v;
   });
-  const ddd = document.getElementById("i-ddd");
-  ddd.addEventListener("input", ()=>{ ddd.value = ddd.value.replace(/\D/g,"").slice(0,2);
-    if(ddd.value.length===2) num.focus(); });
+  const ddd = $("i-ddd");
+  ddd.addEventListener("input", ()=>{ ddd.value = ddd.value.replace(/\D/g,"").slice(0,2); });
+  const idade = $("i-idade");
+  idade.addEventListener("input", ()=>{ idade.value = idade.value.replace(/\D/g,"").slice(0,2); });
+  const cnpj = $("i-cnpj");
+  cnpj.addEventListener("input", ()=>{
+    const d = cnpj.value.replace(/\D/g,"").slice(0,14);
+    let v = d;
+    if(d.length>2)  v = d.slice(0,2)+"."+d.slice(2);
+    if(d.length>5)  v = v.slice(0,6)+"."+d.slice(5);
+    if(d.length>8)  v = v.slice(0,10)+"/"+d.slice(8);
+    if(d.length>12) v = v.slice(0,15)+"-"+d.slice(12);
+    cnpj.value = v;
+  });
 
   show(0);
 })();
