@@ -629,18 +629,18 @@ body{
       <!-- P5 DISPONIBILIDADE (excludente se não atende) -->
       <div class="screen long" data-screen="dispo">
         <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 05</span>
-        <div class="qtitle" id="l-dispo">Você tem disponibilidade para estes horários?</div>
-        <ul class="conds">
-          <li>Período <b>noturno (18h às 22h30)</b> ou os <b>dois períodos</b>: manhã (7h às 9h) e noite (18h às 22h30)</li>
-          <li>De <b>segunda a sexta</b> (ou no mínimo <b>4x por semana</b>)</li>
-          <li>Mantendo essa disponibilidade por, no mínimo, <b>6 meses</b></li>
-          <li>Com <b>início imediato</b> em caso de aprovação</li>
-        </ul>
-        <div class="choices" role="radiogroup" aria-labelledby="l-dispo" data-group="dispo" data-auto>
+        <div class="qtitle" id="l-dispo">Você tem disponibilidade para o período noturno (18h às 22h30) ou para os dois períodos — manhã (7h às 9h) e noite (18h às 22h30) —, de segunda a sexta (ou no mínimo 4x por semana), podendo manter essa disponibilidade por, no mínimo, 6 meses, com início imediato em caso de aprovação?</div>
+        <div class="choices" role="radiogroup" aria-labelledby="l-dispo" data-group="dispo">
           <button type="button" class="choice" role="radio" aria-checked="false" data-value="Noite (18h às 22h30)"><span class="cdot"></span><span>Sim, no período noturno<small>18h às 22h30, atendendo a todas as condições</small></span></button>
           <button type="button" class="choice" role="radio" aria-checked="false" data-value="Manhã (7h às 9h) e noite (18h às 22h30)"><span class="cdot"></span><span>Sim, nos dois períodos<small>Manhã (7h às 9h) e noite (18h às 22h30), atendendo a todas as condições</small></span></button>
           <button type="button" class="choice no" role="radio" aria-checked="false" data-value="Não"><span class="cdot"></span><span>Não atendo a uma ou mais dessas condições<small>O processo será encerrado aqui.</small></span></button>
         </div>
+        <div class="sub reveal" id="dispo-detalhe-box" hidden>
+          <label class="sublbl" for="i-dispo-detalhe">Escreva exatamente sua disponibilidade para cada período</label>
+          <div class="field"><textarea id="i-dispo-detalhe" rows="4" maxlength="1000" aria-describedby="e-dispo" placeholder="Exemplo: Segunda a sexta: Manhã total / Noite: Segunda, terça, quarta e quinta das 19:00 às 22:30, e sexta sem disponibilidade"></textarea></div>
+        </div>
+        <div class="err" id="e-dispo" role="alert" aria-live="polite"></div>
+        <button class="btn" data-next id="dispo-next" hidden>Avançar <span class="arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
       </div>
 
       <!-- P6 MEI (excludente se não pretende abrir) -->
@@ -805,7 +805,7 @@ body{
         aceita_modelo_remuneracao: data.remun,
         motivo_remuneracao: data.remun_motivo,
         niveis_que_ensina: data.nivel,
-        periodo_disponivel: data.dispo,
+        periodo_disponivel: data.dispo + (data.dispo_detalhe ? " | Detalhe: " + data.dispo_detalhe : ""),
         possui_mei: data.mei,
         cnpj_mei: data.cnpj,
         possui_computador_webcam: data.pc,
@@ -835,7 +835,7 @@ body{
 
   const data = {
     nome:"", idade:"", nacionalidade:"", ddd:"", num:"",
-    portugues:"", remun:"", remun_motivo:"", nivel:"", dispo:"",
+    portugues:"", remun:"", remun_motivo:"", nivel:"", dispo:"", dispo_detalhe:"",
     mei:"", cnpj:"", pc:"", formacao:"", atuou:"", tempo:"", ingles:"", english:""
   };
 
@@ -914,6 +914,12 @@ body{
       if(m.length<10) return showErr("e-remun","Conte em poucas palavras por que o modelo faz sentido pra você agora.");
       data.remun_motivo = m; clearErr("e-remun"); return true;
     }
+    if(name==="dispo"){
+      if(!data.dispo || data.dispo==="Não") return showErr("e-dispo","Selecione uma opção.");
+      const d = val("i-dispo-detalhe");
+      if(d.length<10) return showErr("e-dispo","Escreva exatamente sua disponibilidade para cada período.");
+      data.dispo_detalhe = d; clearErr("e-dispo"); return true;
+    }
     if(name==="mei"){
       if(!data.mei) return showErr("e-mei","Selecione uma opção.");
       if(data.mei==="Sim, já possuo MEI"){
@@ -961,6 +967,10 @@ body{
         $("remun-motivo-box").hidden = false; $("remun-next").hidden = false;
         setTimeout(()=>$("i-remun-motivo").focus(), 50);
       }
+      if(group==="dispo"){
+        $("dispo-detalhe-box").hidden = false; $("dispo-next").hidden = false;
+        setTimeout(()=>$("i-dispo-detalhe").focus(), 50);
+      }
       if(group==="mei"){
         const temMei = v==="Sim, já possuo MEI";
         $("cnpj-box").hidden = !temMei; $("mei-next").hidden = false;
@@ -1005,7 +1015,7 @@ body{
     if(e.target && e.target.classList && e.target.classList.contains("choice")) return;
     const name = order[idx];
     if(name==="intro"){ e.preventDefault(); next(); return; }
-    if(["dados","remun","mei","exp"].includes(name)){
+    if(["dados","remun","dispo","mei","exp"].includes(name)){
       const btn = screens[idx].querySelector("[data-next]");
       if(btn && !btn.hidden){ e.preventDefault(); next(); }
     }
