@@ -443,6 +443,11 @@ body{
   background:linear-gradient(135deg,#0f7a41 0%,#0a5c31 100%);
   box-shadow:0 14px 32px -12px rgba(10,92,49,.55), inset 0 1px 0 rgba(255,255,255,.22);
 }
+/* ── Pergunta longa (P5): o texto é o enunciado oficial e não pode ser cortado,
+   então no celular ele perde tamanho em vez de ocupar a tela inteira ── */
+@media (max-width:860px){
+  .qtitle.qlong{ font-size:clamp(16.5px,4.6vw,18.5px); line-height:1.38; letter-spacing:-.01em; }
+}
 @media (hover:none){ .btn.wpp:hover{ box-shadow:0 14px 32px -12px rgba(10,92,49,.55), inset 0 1px 0 rgba(255,255,255,.22); } }
 
 /* ── 14. STEPPER da marca: rotulos abaixo de 4,5:1 sobre o vermelho ───────
@@ -456,7 +461,7 @@ body{
    textarea e telas longas com rolagem própria no desktop (mesma regra da
    tela de remuneração).                                                    */
 .sub{display:flex;flex-direction:column;gap:7px}
-.sub[hidden]{display:none}
+.sub[hidden],.btn[hidden]{display:none}
 .sublbl{font-size:14px;font-weight:600;color:var(--ink)}
 .sub .field{margin-top:0}
 .field input.short{max-width:160px}
@@ -629,7 +634,7 @@ body{
       <!-- P5 DISPONIBILIDADE (excludente se não atende) -->
       <div class="screen long" data-screen="dispo">
         <span class="qnum"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PERGUNTA 05</span>
-        <div class="qtitle" id="l-dispo">Você tem disponibilidade para o período noturno (18h às 22h30) ou para os dois períodos — manhã (7h às 9h) e noite (18h às 22h30) —, de segunda a sexta (ou no mínimo 4x por semana), podendo manter essa disponibilidade por, no mínimo, 6 meses, com início imediato em caso de aprovação?</div>
+        <div class="qtitle qlong" id="l-dispo">Você tem disponibilidade para o período noturno (18h às 22h30) ou para os dois períodos — manhã (7h às 9h) e noite (18h às 22h30) —, de segunda a sexta (ou no mínimo 4x por semana), podendo manter essa disponibilidade por, no mínimo, 6 meses, com início imediato em caso de aprovação?</div>
         <div class="choices" role="radiogroup" aria-labelledby="l-dispo" data-group="dispo">
           <button type="button" class="choice" role="radio" aria-checked="false" data-value="Noite (18h às 22h30)"><span class="cdot"></span><span>Sim, no período noturno<small>18h às 22h30, atendendo a todas as condições</small></span></button>
           <button type="button" class="choice" role="radio" aria-checked="false" data-value="Manhã (7h às 9h) e noite (18h às 22h30)"><span class="cdot"></span><span>Sim, nos dois períodos<small>Manhã (7h às 9h) e noite (18h às 22h30), atendendo a todas as condições</small></span></button>
@@ -862,6 +867,8 @@ body{
 
     const scr = screens.find(s=>s.dataset.screen===name);
     scr.scrollTop = 0;
+    // no celular quem rola é a página: sem isso a pergunta seguinte abre já rolada, com o topo cortado
+    if(window.scrollY) window.scrollTo(0, 0);
     const inp = scr.querySelector("input, textarea");
     if(inp && !inp.closest("[hidden]")) setTimeout(()=>inp.focus({preventScroll:true}), 420);
   }
